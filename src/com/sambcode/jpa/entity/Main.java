@@ -11,10 +11,12 @@ import javax.persistence.Persistence;
 public class Main {
 
 	public static void main(String[] args) {
-		insertar();
+		insert();
+		edit();
+		// delete();
 	}
 
-	public static void insertar() {
+	public static void insert() {
 		EntityManagerFactory emf = Persistence.createEntityManagerFactory("examplejpa");
 		EntityManager em = emf.createEntityManager();
 		EntityTransaction et = em.getTransaction();
@@ -37,6 +39,61 @@ public class Main {
 			et.commit();
 
 			System.out.println("Record made");
+
+		} catch (Exception e) {
+
+			et.rollback();
+
+			System.out.println("Error " + e.getMessage());
+		} finally {
+			em.close();
+		}
+	}
+
+	public static void edit() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("examplejpa");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction et = em.getTransaction();
+
+		try {
+
+			int idPerson = 7; // Registry number
+			Tperson tPerson = em.find(Tperson.class, idPerson);
+
+			tPerson.setIdentificationDocment("3333333333");
+			tPerson.setEmail("she@outlook.com");
+
+			et.begin();
+			em.merge(tPerson);
+			et.commit();
+
+			System.out.println("Editing done correctly");
+
+		} catch (Exception e) {
+
+			et.rollback();
+
+			System.out.println("Error " + e.getMessage());
+		} finally {
+			em.close();
+		}
+	}
+
+	public static void delete() {
+		EntityManagerFactory emf = Persistence.createEntityManagerFactory("examplejpa");
+		EntityManager em = emf.createEntityManager();
+		EntityTransaction et = em.getTransaction();
+
+		try {
+
+			int idPerson = 6; // Registry number
+			Tperson tPerson = em.find(Tperson.class, idPerson);
+
+			et.begin();
+			em.remove(tPerson);
+			et.commit();
+
+			System.out.println("Record removed");
 
 		} catch (Exception e) {
 
