@@ -1,16 +1,24 @@
 package com.sambcode.jpa.entity;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 /**
  * The persistent class for the tperson database table.
  * 
  */
 @Entity
-@Table(name="tperson")
-@NamedQuery(name="Tperson.findAll", query="SELECT t FROM Tperson t")
+@Table(name = "tperson")
+@NamedQueries({ @NamedQuery(name = "Tperson.findAll", query = "SELECT t FROM Tperson t"),
+		@NamedQuery(name = "Tperson.findByDocumentIdentification", query = "SELECT t FROM Tperson t WHERE t.identificationDocment=:parameteridentificationDocment") })
+
 public class Tperson implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -23,7 +31,7 @@ public class Tperson implements Serializable {
 	private String identificationDocment;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idPerson;
 
 	private String registrationDate;
